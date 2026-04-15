@@ -30,6 +30,7 @@ async function sendFormRequest(app, path, body) {
     body: new URLSearchParams(body),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
+      'Origin': 'http://localhost:3000',
     },
   });
 }
@@ -58,7 +59,7 @@ describe('/login', () => {
     const app = require('./app');
     const res = await app.request('/login');
     expect(res.headers.get('Content-Type')).toBe('text/html; charset=UTF-8');
-    expect(await res.text()).toMatch(/<a href='\/auth\/github'/);
+    expect(await res.text()).toMatch(/<a href="\/auth\/github"/);
     expect(res.status).toBe(200);
   });
 
@@ -318,10 +319,8 @@ describe('/schedules/:scheduleId/delete', () => {
       },
     );
 
-    // 削除
-    const res = await app.request(`/schedules/${scheduleId}/delete`, {
-      method: 'POST',
-    });
+    // 削除   テキスト修正したので要注意！！
+    const res = await sendFormRequest(app, `/schedules/${scheduleId}/delete`, {});
     expect(res.status).toBe(302);
 
     // テスト
