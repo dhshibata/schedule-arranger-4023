@@ -348,7 +348,7 @@ app.get('/:scheduleId/edit', scheduleIdValidator, async (c) => {
   );
 });
 
-app.post('/:scheduleId/update', scheduleIdValidator, scheduleIdValidator, async (c) => {
+app.post('/:scheduleId/update', scheduleIdValidator, scheduleFormValidator, async (c) => {
   const { user } = c.get('session') ?? {};
   const schedule = await prisma.schedule.findUnique({
     where: { scheduleId: c.req.valid('param').scheduleId },
